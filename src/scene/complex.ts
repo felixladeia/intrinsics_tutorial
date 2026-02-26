@@ -1,10 +1,9 @@
 import * as THREE from "three";
-import type { WireObject } from "./objects";
 
 // Sample N points from a BufferGeometry surface
 export function samplePointsFromGeometry(geom: THREE.BufferGeometry, n: number): THREE.Vector3[] {
   // Ensure we have indexed triangles
-  const g = geom.index ? geom.clone() : THREE.BufferGeometryUtils?.mergeVertices?.(geom) ?? geom;
+  const g = geom; // TorusKnotGeometry is indexed; no need for BufferGeometryUtils
   const pos = g.getAttribute("position");
   const idx = g.index;
 

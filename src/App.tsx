@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import * as THREE from "three";
 import type { Params } from "./types";
 import Controls from "./components/Controls";
@@ -63,9 +63,6 @@ export default function App() {
   const [params, setParamsRaw] = useState<Params>(() => frameTorusAtStartup(defaultParams));
   const [lessonIdx, setLessonIdx] = useState(0);
   const [ray, setRay] = useState<{ origin: THREE.Vector3; dir: THREE.Vector3 } | null>(null);
-
-  // ➕ ADD THIS STATE
-  const [autoCenter, setAutoCenter] = useState(true);
 
   const lesson = LESSONS[lessonIdx];
   const locked = useMemo(() => new Set(lesson.lock ?? []), [lesson]);

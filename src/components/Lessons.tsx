@@ -1,4 +1,3 @@
-import React from "react";
 import type { LessonStep } from "../lessons/lessons";
 
 export default function Lessons(props: {

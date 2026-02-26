@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import type { Params } from "../types";
-import { makeHouse } from "../scene/objects";
 import { makeTorusKnotSampled } from "../scene/complex";
 import { R_fromYPR, worldToCamera, projectPoint, pixelToNormalized, undistortNormalized, camDirToWorld } from "../math/camera";
 
@@ -53,35 +52,6 @@ export default function ImagePlane(props: {
       ctx.fill();
     }
 
-    // // project vertices
-    // const proj = house.vertices.map((Xw) => {
-    //   const Xc = worldToCamera(Xw, pose, R);
-    //   return projectPoint(Xc, K, dist);
-    // });
-
-    // // draw wireframe edges
-    // ctx.lineWidth = 2;
-    // ctx.strokeStyle = dist.enabled ? "#444" : "#222";
-    // for (const [a, b] of house.edges) {
-    //   const A = proj[a], B = proj[b];
-    //   if (!A || !B) continue;
-
-    //   ctx.beginPath();
-    //   ctx.moveTo(A.u, A.v);
-    //   ctx.lineTo(B.u, B.v);
-    //   ctx.stroke();
-    // }
-
-    // // draw vertices
-    // for (let i = 0; i < proj.length; i++) {
-    //   const P = proj[i];
-    //   if (!P) continue;
-    //   ctx.fillStyle = "#111";
-    //   ctx.beginPath();
-    //   ctx.arc(P.u, P.v, 4, 0, Math.PI * 2);
-    //   ctx.fill();
-    // }
-
     // Distortion hint overlay (optional grid)
     if (dist.enabled) {
       ctx.globalAlpha = 0.25;
@@ -98,7 +68,7 @@ export default function ImagePlane(props: {
       }
       ctx.globalAlpha = 1.0;
     }
-  }, [props.params, torus.vertices, torus.edges]);
+  }, [props.params, torus.mesh, torus.points]);
 
   // click -> ray
   useEffect(() => {

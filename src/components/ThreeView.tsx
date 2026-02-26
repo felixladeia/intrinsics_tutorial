@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import type { Params } from "../types";
@@ -16,7 +16,7 @@ export default function ThreeView(props: {
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const viewCamRef = useRef<THREE.PerspectiveCamera | null>(null);
-  const controlsRef = useRef<OrbitControls | null>(null);
+  const controlsRef = useRef<any>(null);
 
   const camAxesRef = useRef<THREE.AxesHelper | null>(null);
   const rayLineRef = useRef<THREE.Line | null>(null);
@@ -115,7 +115,7 @@ export default function ThreeView(props: {
       renderer.dispose();
       mount.removeChild(renderer.domElement);
     };
-  }, [torus.vertices, torus.edges]);
+  }, [props.params, torus.mesh, torus.points]);
 
   // Update teaching camera axes + ray when params/ray change
   useEffect(() => {

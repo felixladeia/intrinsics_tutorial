@@ -1,4 +1,3 @@
-import React from "react";
 import type { Params } from "../types";
 
 type LockKey = NonNullable<import("../lessons/lessons").LessonStep["lock"]>[number];
