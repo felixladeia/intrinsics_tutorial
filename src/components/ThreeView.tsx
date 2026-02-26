@@ -124,33 +124,6 @@ export default function ThreeView(props: {
     const rayLine = rayLineRef.current;
     if (!scene || !camAxes || !rayLine) return;
 
-    // // pose
-    // camAxes.position.set(props.params.pose.Cx, props.params.pose.Cy, props.params.pose.Cz);
-
-    // const R = R_fromYPR(props.params.pose.yaw, props.params.pose.pitch, props.params.pose.roll);
-
-    // // Set camAxes orientation from R (approx visual)
-    // const e = R.elements;
-    // const M4 = new THREE.Matrix4().set(
-    //   e[0], e[1], e[2], 0,
-    //   e[3], e[4], e[5], 0,
-    //   e[6], e[7], e[8], 0,
-    //   0,    0,    0,    1
-    // );
-    // camAxes.setRotationFromMatrix(M4);
-
-    // // ray
-    // if (props.ray) {
-    //   const origin = props.ray.origin;
-    //   const dir = props.ray.dir.clone().normalize();
-    //   const p1 = origin.clone();
-    //   const p2 = origin.clone().add(dir.multiplyScalar(50)); // long ray
-    //   (rayLine.geometry as THREE.BufferGeometry).setFromPoints([p1, p2]);
-    //   rayLine.visible = true;
-    // } else {
-    //   rayLine.visible = false;
-    // }
-
     const teachCam = teachCamRef.current;
     const teachHelper = teachHelperRef.current;
     if (!teachCam || !teachHelper) return;
@@ -160,16 +133,17 @@ export default function ThreeView(props: {
 
     // Orientation from yaw/pitch/roll (same R you already compute)
     const R = R_fromYPR(props.params.pose.yaw, props.params.pose.pitch, props.params.pose.roll);
-    const e = R.elements;
+    //const e = R.elements;
 
-    // Build a Matrix4 from R
-    const M4 = new THREE.Matrix4().set(
-      e[0], e[1], e[2], 0,
-      e[3], e[4], e[5], 0,
-      e[6], e[7], e[8], 0,
-      0,    0,    0,    1
-    );
-
+    // // Build a Matrix4 from R
+    // const M4 = new THREE.Matrix4().set(
+    //   e[0], e[1], e[2], 0,
+    //   e[3], e[4], e[5], 0,
+    //   e[6], e[7], e[8], 0,
+    //   0,    0,    0,    1
+    // );
+    const M4 = new THREE.Matrix4().setFromMatrix3(R);
+    
     // Apply rotation
     teachCam.setRotationFromMatrix(M4);
 

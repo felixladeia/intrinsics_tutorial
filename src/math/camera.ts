@@ -42,27 +42,38 @@ export function yprLookAt(from: THREE.Vector3, to: THREE.Vector3): { yaw: number
 }
 
 // World -> camera
+// export function worldToCamera(Xw: THREE.Vector3, pose: Pose, R: THREE.Matrix3): THREE.Vector3 {
+//   const C = new THREE.Vector3(pose.Cx, pose.Cy, pose.Cz);
+//   const v = Xw.clone().sub(C);
+//   const e = v.toArray();
+//   const m = R.elements;
+//   return new THREE.Vector3(
+//     m[0] * e[0] + m[1] * e[1] + m[2] * e[2],
+//     m[3] * e[0] + m[4] * e[1] + m[5] * e[2],
+//     m[6] * e[0] + m[7] * e[1] + m[8] * e[2]
+//   );
+// }
+
+// World -> camera: Xc = R * (Xw - C)
 export function worldToCamera(Xw: THREE.Vector3, pose: Pose, R: THREE.Matrix3): THREE.Vector3 {
   const C = new THREE.Vector3(pose.Cx, pose.Cy, pose.Cz);
-  const v = Xw.clone().sub(C);
-  const e = v.toArray();
-  const m = R.elements;
-  return new THREE.Vector3(
-    m[0] * e[0] + m[1] * e[1] + m[2] * e[2],
-    m[3] * e[0] + m[4] * e[1] + m[5] * e[2],
-    m[6] * e[0] + m[7] * e[1] + m[8] * e[2]
-  );
+  return Xw.clone().sub(C).applyMatrix3(R);
 }
 
+// // Camera -> world direction: dirWorld = R^T * dirCam
+// export function camDirToWorld(dirCam: THREE.Vector3, R: THREE.Matrix3): THREE.Vector3 {
+//   const m = R.elements;
+//   // R^T
+//   return new THREE.Vector3(
+//     m[0] * dirCam.x + m[3] * dirCam.y + m[6] * dirCam.z,
+//     m[1] * dirCam.x + m[4] * dirCam.y + m[7] * dirCam.z,
+//     m[2] * dirCam.x + m[5] * dirCam.y + m[8] * dirCam.z
+//   );
+// }
 // Camera -> world direction: dirWorld = R^T * dirCam
 export function camDirToWorld(dirCam: THREE.Vector3, R: THREE.Matrix3): THREE.Vector3 {
-  const m = R.elements;
-  // R^T
-  return new THREE.Vector3(
-    m[0] * dirCam.x + m[3] * dirCam.y + m[6] * dirCam.z,
-    m[1] * dirCam.x + m[4] * dirCam.y + m[7] * dirCam.z,
-    m[2] * dirCam.x + m[5] * dirCam.y + m[8] * dirCam.z
-  );
+  const Rt = R.clone().transpose();
+  return dirCam.clone().applyMatrix3(Rt);
 }
 
 // --- Distortion model (Brown–Conrady) on normalized coords (x,y) ---
